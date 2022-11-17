@@ -6,12 +6,11 @@ const { google } = require("googleapis");
 var Oauth2Data = require("../credential.json");
 const CLIENT_ID = Oauth2Data.web.client_id;
 const CLIENT_SECRET = Oauth2Data.web.client_secret;
-// const { REDIRECT_URI } = require("../config/config");
+const { _REDIRECT_URI } = require("../config/config");
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
-  (REDIRECT_URI =
-    "https://peaceful-rex-368804.uc.r.appspot.com/google/callback")
+  _REDIRECT_URI
 );
 
 var authed = false;
