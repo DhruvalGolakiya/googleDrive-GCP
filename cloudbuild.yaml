@@ -4,7 +4,7 @@ steps:
   - name: "gcr.io/cloud-builders/npm"
     args: ["run", "build"]
   - name: "bash"
-    args: ["rm", "-r", "src"]
+    args: ["rm", "-r"]
   - name: "gcr.io/cloud-builders/npm"
     args: ["run", "create-env"]
     env:
