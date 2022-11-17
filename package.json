@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "create-env": "printenv > .env",
     "start": "nodemon ./bin/www",
     "build": "echo 'build script executed'"
   },
