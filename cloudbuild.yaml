@@ -1,12 +1,16 @@
-# cloudbuild.yaml
 steps:
-- name: node:16.14.0
-  entrypoint: npm
-  args: ["install"]
-- name: node:16.14.0
-  entrypoint: npm
-  args: ["run", "build"]
-- name: "gcr.io/cloud-builders/gcloud"
-  args: ["app", "deploy"]
+  - name: "gcc.io/cloud-builders/npm"
+    args: ["install"]
+  - name: "gcc.io/cloud-builders/npm"
+    args: ["run", "build"]
+  - name: "bash"
+    args: ["rm", "-r", "src"]
+  - name: "gcc.io/cloud-builders/npm"
+    args: ["run", "create-env"]
+    env:
+      - "REDIRECT_URI=${_REDIRECT_URI}"
+  - name: "gcc.io/cloud-builders/npm"
+    args: ["app", "deploy"]
 options:
   logging: CLOUD_LOGGING_ONLY
+timeout: "1600s"
