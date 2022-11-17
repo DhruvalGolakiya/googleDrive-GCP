@@ -4,9 +4,9 @@ steps:
   - name: "gcr.io/cloud-builders/npm"
     args: ["run", "build"]
   - name: "gcr.io/cloud-builders/npm"
-   args: ["run", "create-env"]
-    env:
-      - 'REDIRECT_URI=${_REDIRECT_URI}'
+    args: ["run", "create-env"]
+     env:
+       - 'REDIRECT_URI=${_REDIRECT_URI}'
   - name: "gcr.io/cloud-builders/gcloud"
     args: ["app", "deploy"]
 options:
