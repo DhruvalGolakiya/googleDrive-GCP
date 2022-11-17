@@ -9,6 +9,6 @@ steps:
       - "REDIRECT_URI=${_REDIRECT_URI}"
   - name: "gcr.io/cloud-builders/gcloud"
     args: ["app", "deploy"]
-    timeout : '1600s'
+    timeout : 1600s
 options:
   logging: CLOUD_LOGGING_ONLY
