@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "nodemon ./bin/www"
+    "start": "nodemon ./bin/www",
+    "build": "echo 'build script executed'"
   },
   "dependencies": {
     "@google-cloud/storage": "^6.7.0",
