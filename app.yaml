@@ -1,4 +1,4 @@
-# runtime: custom
+runtime: custom
 service: default
 env: flex
 

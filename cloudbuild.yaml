@@ -1,0 +1,16 @@
+steps:
+  - name: "gcr.io/cloud-builders/npm"
+    args: ["install"]
+  - name: "gcr.io/cloud-builders/npm"
+    args: ["run", "build"]
+  - name: "gcr.io/cloud-builders/npm"
+    args: ["run", "create-env"]
+    env:
+      - "REDIRECT_URI=${_REDIRECT_URI}"
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: ["app", "deploy"]
+options:
+  logging: CLOUD_LOGGING_ONLY
+timeout: "1600s"
+
+
