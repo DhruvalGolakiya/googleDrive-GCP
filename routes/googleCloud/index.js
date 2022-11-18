@@ -1,23 +1,31 @@
-var express = require("express");
-var router = express.Router();
-var util  = require('util')
+const express = require("express");
+const router = express.Router();
+const util = require("util");
 const multer = require("../../config/multerConfig");
-router.get("/", (req, res) => {
-  res.render("GCloud");
-});
 const path = require("path");
 const serviceKey = path.join(__dirname, "../../keys.json");
 const { Storage } = require("@google-cloud/storage");
+
+// INIT STORAGE
 const storage = new Storage({
   keyFilename: serviceKey,
   projectId: "peaceful-rex-368804",
 });
+
+// INIT BUCKET
 const bucket = storage.bucket("peaceful-rex-368804.appspot.com");
 
+// CLOUD HOME PAGE
+router.get("/", (req, res) => {
+  res.render("GCloud");
+});
+
+// UPLOAD TO BUCKET  PAGE
 router.get("/uploadToBucket", (req, res) => {
   res.render("gcpUpload");
 });
 
+// UPLOAD FILE TO BUCKET
 router.post("/uploadToBucket", multer.single("file"), (req, res, next) => {
   if (!req.file) {
     res.status(400).send("No file uploaded.");
@@ -44,9 +52,9 @@ router.post("/uploadToBucket", multer.single("file"), (req, res, next) => {
   blobStream.end(req.file.buffer);
 });
 
+// LOGOUT
 router.get("/logout", (req, res) => {
-  (authed = false), res.redirect("/google/googleCloud");
+  res.redirect("/google/googleCloud");
 });
-
 
 module.exports = router;

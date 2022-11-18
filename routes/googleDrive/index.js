@@ -13,7 +13,11 @@ const oAuth2Client = new google.auth.OAuth2(
   );
 var authed = false;
 
+// SCOPES
+
 const SCOPES = "https://www.googleapis.com/auth/drive";
+
+// GOOGLE DRIVE PAGE
 
 router.get("/", function (req, res, next) {
   if (!authed) {
@@ -29,7 +33,7 @@ router.get("/", function (req, res, next) {
   }
 });
 
-
+// CALLBACK
 
 router.get("/callback", (req, res) => {
   const code = req.query.code;
