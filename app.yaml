@@ -1,7 +1,7 @@
-runtime: custom
+runtime: nodejs
+instance_class: F1
 service: default
 env: flex
-
 # This sample incurs costs to run on the App Engine flexible environment.
 # The settings below are to reduce costs during testing and are not appropriate
 # for production use. For more information, see:

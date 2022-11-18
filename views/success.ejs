@@ -9,16 +9,13 @@
     <title>Document</title>
   </head>
   <body>
-    <h1>Upload Your File</h1>
-    <form action="/google/upload" method="post" enctype="multipart/form-data">
+    <h1>Upload Your File To Drive</h1>
+    <form action="/google/googleDrive/upload" method="post" enctype="multipart/form-data">
       <div>
         <input type="file" name="file" required />
         <div><button>upload file</button></div>
       </div>
     </form>
-    <% if (success == true) { %>
-    <h1>uploaded</h1>
-    <%}%>
-    <a href="/google/logout">logOut</a>
+    <a href="/google/googleDrive/logout">logOut</a>
   </body>
 </html>
