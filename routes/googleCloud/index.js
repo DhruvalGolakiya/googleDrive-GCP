@@ -8,12 +8,12 @@ const { Storage } = require("@google-cloud/storage");
 
 // INIT STORAGE
 const storage = new Storage({
-  keyFilename: serviceKey,
-  projectId: "peaceful-rex-368804",
+  keyFilename: serviceKey, //
+  projectId: process.env.PROJECT_ID,
 });
 
 // INIT BUCKET
-const bucket = storage.bucket("peaceful-rex-368804.appspot.com");
+const bucket = storage.bucket("peaceful-rex-368804.appspot.com"); // bucket name
 
 // CLOUD HOME PAGE
 router.get("/", (req, res) => {
