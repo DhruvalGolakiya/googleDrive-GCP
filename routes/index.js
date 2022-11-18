@@ -1,7 +1,7 @@
 var express = require("express");
 var router = express.Router();
 const fs = require("fs");
-const multer = require("multer");
+const Multer = require("multer");
 const { google } = require("googleapis");
 var Oauth2Data = require("../credential.json");
 const CLIENT_ID = Oauth2Data.web.client_id;
@@ -13,9 +13,25 @@ const oAuth2Client = new google.auth.OAuth2(
   _REDIRECT_URI
 );
 
+const util = require("util");
+
+const multer = Multer({
+  storage: Multer.memoryStorage(),
+  limits: {
+    fileSize: 5 * 1024 * 1024, // no larger than 5mb, you can change as needed.
+  },
+});
+const { Storage } = require("@google-cloud/storage");
+const path = require("path");
+const serviceKey = path.join(__dirname, "../keys.json");
+const storage = new Storage({
+  keyFilename: serviceKey,
+  projectId: "peaceful-rex-368804",
+});
+
+const bucket = storage.bucket("peaceful-rex-368804.appspot.com");
 var authed = false;
 
-var upload = multer();
 const SCOPES = "https://www.googleapis.com/auth/drive";
 
 router.get("/", function (req, res, next) {
@@ -54,7 +70,37 @@ router.get("/callback", (req, res) => {
   }
 });
 
-router.post("/upload", upload.single("file"), (req, res, next) => {
+
+router.get('/uploadToBucket',(req,res)=>{
+  res.render('gcpUpload')
+})
+router.post("/uploadToBucket", multer.single("file"), (req, res, next) => {
+  if (!req.file) {
+    res.status(400).send("No file uploaded.");
+    return;
+  }
+
+  const blob = bucket.file(req.file.originalname);
+  const blobStream = blob.createWriteStream();
+
+  blobStream.on("error", (err) => {
+    next(err);
+  });
+  console.log(bucket.name);
+  console.log(blob.name);
+  blobStream.on("finish", () => {
+    const publicUrl = util.format(
+      `https://storage.googleapis.com/${bucket.name}/${blob.name}`
+    );
+    res
+      .status(200)
+      .send(`file ${blob.name} uploaded successfu lly in ${bucket.name}`);
+  });
+
+  blobStream.end(req.file.buffer);
+});
+
+router.post("/upload", multer.single("file"), (req, res, next) => {
   let stream = require("stream");
   let fileObject = req.file;
   let bufferStream = new stream.PassThrough();
