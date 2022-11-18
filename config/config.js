@@ -9,4 +9,6 @@ if (ORIGIN_URI == env.ORIGIN_URI) {
   REDIRECT_URI = "https://peaceful-rex-368804.uc.r.appspot.com/google/googleDrive/callback";
 }
 
+console.log(REDIRECT_URI);
+
 module.exports = { REDIRECT_URI };

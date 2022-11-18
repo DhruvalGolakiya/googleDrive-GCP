@@ -1,5 +1,6 @@
 var express = require("express");
 var router = express.Router();
+var util  = require('util')
 const multer = require("../../config/multerConfig");
 router.get("/", (req, res) => {
   res.render("GCloud");
@@ -42,5 +43,10 @@ router.post("/uploadToBucket", multer.single("file"), (req, res, next) => {
 
   blobStream.end(req.file.buffer);
 });
+
+router.get("/logout", (req, res) => {
+  (authed = false), res.redirect("/google/googleCloud");
+});
+
 
 module.exports = router;
