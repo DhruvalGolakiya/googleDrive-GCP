@@ -10,7 +10,7 @@
   </head>
   <body>
     <h1>Upload Your File To Google Cloud</h1>
-    <form 
+    <form
       action="/google/googleCloud/uploadToBucket"
       method="post"
       enctype="multipart/form-data"
@@ -20,20 +20,9 @@
         <div><button>upload file</button></div>
       </div>
     </form>
-
-    <% if(uploaded == false){ %>
-      <a></a>
-    <% } else{ %>  
-     <a>File Uploaded</a>
-   <% } %>
     <a href="/google/googleCloud/logout">logOut</a>
 
-
-
-    <form
-      action="/google/googleCloud/uploadedImages"
-      method="get"
-    >
+    <form action="/google/googleCloud/uploadedImages" method="get">
       <div>
         <button>Uploaded Images</button>
       </div>

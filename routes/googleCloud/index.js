@@ -1,8 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const util = require("util");
-const imageminJpegtran = require("imagemin-jpegtran");
-const imageminPngquant = require("imagemin-pngquant");
+
 const multer = require("../../config/multerConfig");
 const multerFor = require("multer");
 const path = require("path");
@@ -11,10 +10,10 @@ const serviceKey = path.join(__dirname, "../../keys.json");
 const { google } = require("googleapis");
 const { Storage } = require("@google-cloud/storage");
 const Oauth2Data = require("../../credential.json");
-const { file } = require("googleapis/build/src/apis/file");
 const CLIENT_ID = Oauth2Data.web.client_id;
 const CLIENT_SECRET = Oauth2Data.web.client_secret;
 const fileSchema = require("../../model/fileModel");
+const flash = require("connect-flash");
 // const { REDIRECT_URI } = require("../../config/config");
 
 mongoose.connect(
@@ -25,6 +24,8 @@ db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", function () {
   console.log("Connected successfully");
 });
+
+router.use(flash());
 
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
@@ -41,7 +42,7 @@ const SCOPES =
   "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.email";
 // INIT BUCKET
 const bucket = storage.bucket("peaceful-rex-368804.appspot.com"); // bucket name
-let uploaded = false
+// let uploaded = false
 // CLOUD HOME PAGE
 router.get("/", function (req, res, next) {
   if (!req.session.user_id) {
@@ -53,8 +54,7 @@ router.get("/", function (req, res, next) {
     console.log(url);
     res.render("GCloud", { url: url });
   } else {
-   
-    res.render("gcpUpload",{uploaded : uploaded});
+    res.render("gcpUpload");
   }
 });
 // COMPRESS
@@ -93,7 +93,7 @@ router.get("/uploadToBucket", (req, res) => {
   res.render("gcpUpload");
 });
 router.get("/callback", (req, res) => {
-  uploaded = false
+  uploaded = false;
   const code = req.query.code;
   console.log("code");
   console.log(code);
@@ -165,9 +165,9 @@ router.post(
       });
       newFile.save().then(async () => {
         // res.jsonp('uploaded')
-        // let alert = require('alert'); 
+        // let alert = require('alert');
         // alert('file Uploaded')
-        uploaded = true
+        // uploaded = true
         res.redirect("/google/googleCloud");
       });
     });
