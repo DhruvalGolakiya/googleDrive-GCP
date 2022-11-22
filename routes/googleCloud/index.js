@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const util = require("util");
-
 const multer = require("../../config/multerConfig");
 const multerFor = require("multer");
 const path = require("path");
+const imageminJpegtran = require('imagemin-jpegtran')
+const imageminPngquant = require('imagemin-pngquant')
 const mongoose = require("mongoose");
 const serviceKey = path.join(__dirname, "../../keys.json");
 const { google } = require("googleapis");
@@ -13,8 +14,8 @@ const Oauth2Data = require("../../credential.json");
 const CLIENT_ID = Oauth2Data.web.client_id;
 const CLIENT_SECRET = Oauth2Data.web.client_secret;
 const fileSchema = require("../../model/fileModel");
-// const { REDIRECT_URI } = require("../../config/config");
-
+const { buffer } = require("imagemin");
+const fs = require("fs");
 mongoose.connect(
   "mongodb+srv://Dhruval:DhruvalMDDK257@cluster0.eus4ytk.mongodb.net/imageData"
 );
@@ -27,8 +28,7 @@ db.once("open", function () {
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
-  REDIRECT_URI =
-    "https://peaceful-rex-368804.uc.r.appspot.com/google/googleCloud/callback"
+  (REDIRECT_URI = "http://localhost:3000/google/googleCloud/callback")
 );
 // INIT STORAGE
 const storage = new Storage({
@@ -40,9 +40,8 @@ const SCOPES =
   "https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/userinfo.email";
 // INIT BUCKET
 const bucket = storage.bucket("peaceful-rex-368804.appspot.com"); // bucket name
-// let uploaded = false
-// CLOUD HOME PAGE
-router.get("/", function (req, res, next) {
+
+router.get("/", async (req, res, next) => {
   if (!req.session.user_id) {
     var url = oAuth2Client.generateAuthUrl({
       access_type: "offline",
@@ -52,12 +51,18 @@ router.get("/", function (req, res, next) {
     console.log(url);
     res.render("GCloud", { url: url });
   } else {
+    const images = await db
+      .collection("fileschemas")
+      .find({ user_id: req.session.user_id })
+      .toArray();
+    console.log(images);
+    res.locals.imageList = images;
     res.render("gcpUpload");
   }
 });
 // COMPRESS
 
-// router.use("/uploads", express.static(path.join(__dirname + "../../uploads")));
+// router.use("/uploads", express.static());
 // const fileStorage = multerFor.diskStorage({
 //   destination: function (req, file, cb) {
 //     cb(null, "uploads");
@@ -83,7 +88,7 @@ router.get("/", function (req, res, next) {
 //       }),
 //     ],
 //   });
-//   res.download(files[0].destinationPath);
+ 
 // });
 
 // UPLOAD TO BUCKET  PAGE
@@ -107,7 +112,6 @@ router.get("/callback", (req, res) => {
           audience: CLIENT_ID,
         });
         const payload = ticket.getPayload();
-        const userid = payload["sub"];
         console.log(req.session);
         req.session.user_id = payload.sub;
         req.session.email = payload.email;
@@ -165,24 +169,39 @@ router.post(
         res.redirect("/google/googleCloud");
       });
     });
-
+    // console.log(req.file.buffer.toString());
+   
+   
+    console.log(result);
+    const filePath = path.join(__dirname + `../../${req.file.originalname}`);
+    fs.writeFile(filePath, result, () => {});
     blobStream.end(req.file.buffer);
+    
   }
 );
 
-router.get("/uploadedImages", async (req, res) => {
-  const images = await db
-    .collection("fileschemas")
-    .find({ user_id: req.session.user_id })
-    .toArray();
-  console.log(images);
-  res.locals.imageList = images;
-  res.render("ImagesPage");
-});
+router.get('/download',(req,res)=>{
+  res.render('download')
+})
 
-router.get("/compressUpload", (req, res) => {
-  res.render("compresUpload");
-});
+router.post('/download', async (req,res)=>{
+  // const result = await buffer('/Volumes/HDD/Dhruval/Projects/googleDrive/routes/123.png', {
+  //   plugins: [
+  //     imageminJpegtran(),
+  //     imageminPngquant({
+  //       quality: [0.6, 0.8],
+  //     }),
+  //   ],
+  // });
+  // const image_id = req.params.id 
+  // console.log(image_id);
+  // res.redirect('/google/googleCloud')
+  res.download('/Volumes/HDD/Dhruval/Projects/googleDrive/routes/123.png');
+})
+
+// router.get("/compressUpload", (req, res) => {
+//   res.render("compresUpload");
+// });
 
 // router.post("/uploadLocal", upload.single("image"), (req, res, next) => {
 //   const file = req.file;

@@ -21,11 +21,26 @@
       </div>
     </form>
     <a href="/google/googleCloud/logout">logOut</a>
-
-    <form action="/google/googleCloud/uploadedImages" method="get">
+    <h2>Uploaded Image List</h2>
+    <% if(imageList == ''){ %>
+    <h1>No images Uploaded</h1>
+      <% } else{ %></ul> <% imageList.forEach(image => { %>
+      <li style="display: inline-block">
+        <a  target="_blank" href="<%=image.public_url%>"><img height="300px" width="400px" src="<%=image.public_url%>" /></a>
+         <form
+      action="/google/googleCloud/download/<%= image.file_name %> "
+      method="get"
+      enctype="multipart/form-data"
+    >
       <div>
-        <button>Uploaded Images</button>
+        <div><button>Download</button></div>
       </div>
     </form>
+      </li>
+     
+    
+    <% });%> <% } %>
+
+   
   </body>
 </html>
