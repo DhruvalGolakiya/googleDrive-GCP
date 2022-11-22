@@ -28,8 +28,8 @@
       <li style="display: inline-block">
         <a  target="_blank" href="<%=image.public_url%>"><img height="300px" width="400px" src="<%=image.public_url%>" /></a>
          <form
-      action="/google/googleCloud/download/<%= image.file_name %> "
-      method="get"
+      action="/google/googleCloud/download/"
+      method="post"
       enctype="multipart/form-data"
     >
       <div>

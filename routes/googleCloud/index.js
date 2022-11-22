@@ -4,8 +4,8 @@ const util = require("util");
 const multer = require("../../config/multerConfig");
 const multerFor = require("multer");
 const path = require("path");
-const imageminJpegtran = require('imagemin-jpegtran')
-const imageminPngquant = require('imagemin-pngquant')
+const imageminJpegtran = require("imagemin-jpegtran");
+const imageminPngquant = require("imagemin-pngquant");
 const mongoose = require("mongoose");
 const serviceKey = path.join(__dirname, "../../keys.json");
 const { google } = require("googleapis");
@@ -88,7 +88,7 @@ router.get("/", async (req, res, next) => {
 //       }),
 //     ],
 //   });
- 
+
 // });
 
 // UPLOAD TO BUCKET  PAGE
@@ -170,21 +170,18 @@ router.post(
       });
     });
     // console.log(req.file.buffer.toString());
-   
-   
+
     console.log(result);
     const filePath = path.join(__dirname + `../../${req.file.originalname}`);
     fs.writeFile(filePath, result, () => {});
     blobStream.end(req.file.buffer);
-    
   }
 );
 
-router.get('/download',(req,res)=>{
-  res.render('download')
-})
+// router.get('/download/',(req,res)=>{
+// })
 
-router.post('/download', async (req,res)=>{
+router.post("/download/name", async (req, res) => {
   // const result = await buffer('/Volumes/HDD/Dhruval/Projects/googleDrive/routes/123.png', {
   //   plugins: [
   //     imageminJpegtran(),
@@ -193,11 +190,20 @@ router.post('/download', async (req,res)=>{
   //     }),
   //   ],
   // });
-  // const image_id = req.params.id 
+  // const images = await db
+  //   .collection("fileschemas")
+  //   .find({ user_id: req.session.user_id })
+  //   .toArray();
+  // console.log(images);
+  // images.forEach((image) => {
+  //   console.log(image.file_name);
+  //   req.params.id = image.file_name;
+  // });
+
   // console.log(image_id);
   // res.redirect('/google/googleCloud')
-  res.download('/Volumes/HDD/Dhruval/Projects/googleDrive/routes/123.png');
-})
+  res.download("/Volumes/HDD/Dhruval/Projects/googleDrive/routes/123.png");
+});
 
 // router.get("/compressUpload", (req, res) => {
 //   res.render("compresUpload");
