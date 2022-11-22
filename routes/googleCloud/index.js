@@ -30,7 +30,7 @@ router.use(flash());
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
-  (REDIRECT_URI = "http://localhost:3000/google/googleCloud/callback")
+  (REDIRECT_URI = "http://peaceful-rex-368804.uc.r.appspot.com/google/googleCloud/callback")
 );
 // INIT STORAGE
 const storage = new Storage({
