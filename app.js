@@ -26,7 +26,7 @@ app.use(
     saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl:
-        "mongodb+srv://Dhruval:DhruvalMDDK257@cluster0.eus4ytk.mongodb.net/googleCloudFileUpload",
+        "mongodb+srv://Dhruval:DhruvalMDDK257@cluster0.eus4ytk.mongodb.net/imageData",
     }),
   })
 );

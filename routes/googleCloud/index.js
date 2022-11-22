@@ -24,11 +24,11 @@ db.once("open", function () {
   console.log("Connected successfully");
 });
 
-
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
   CLIENT_SECRET,
-  (REDIRECT_URI = "http://peaceful-rex-368804.uc.r.appspot.com/google/googleCloud/callback")
+  REDIRECT_URI =
+    "https://peaceful-rex-368804.uc.r.appspot.com/google/googleCloud/callback"
 );
 // INIT STORAGE
 const storage = new Storage({
@@ -58,20 +58,20 @@ router.get("/", function (req, res, next) {
 // COMPRESS
 
 // router.use("/uploads", express.static(path.join(__dirname + "../../uploads")));
-const fileStorage = multerFor.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "uploads");
-  },
-  filename: function (req, file, cb) {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  },
-});
-const upload = multerFor({
-  storage: fileStorage,
-});
+// const fileStorage = multerFor.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, "uploads");
+//   },
+//   filename: function (req, file, cb) {
+//     cb(
+//       null,
+//       file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+//     );
+//   },
+// });
+// const upload = multerFor({
+//   storage: fileStorage,
+// });
 // const imagemin = require("imagemin");
 // router.post("/compress/uploads/:name/:ext", async (req, res) => {
 //   const files = await imagemin(["uploads/" + req.params.name], {
@@ -162,10 +162,6 @@ router.post(
         public_url: public_urL,
       });
       newFile.save().then(async () => {
-        // res.jsonp('uploaded')
-        // let alert = require('alert');
-        // alert('file Uploaded')
-        // uploaded = true
         res.redirect("/google/googleCloud");
       });
     });
@@ -183,21 +179,6 @@ router.get("/uploadedImages", async (req, res) => {
   res.locals.imageList = images;
   res.render("ImagesPage");
 });
-
-// router.get("/getFiles", (req, res) => {
-//   async function listFiles() {
-//     const [files] = await storage
-//       .bucket("peaceful-rex-368804.appspot.com")
-//       .getFiles({ prefix: "testFolder" });
-
-//     console.log("Files:");
-//     files.forEach((file) => {
-//       // console.log(file.metadata);
-//       console.log(file.name);
-//     });
-//   }
-//   listFiles().catch(console.error);
-// });
 
 router.get("/compressUpload", (req, res) => {
   res.render("compresUpload");

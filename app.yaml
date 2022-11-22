@@ -1,12 +1,5 @@
-runtime: nodejs14
-env: standard
-instance_class: F1
-handlers:
-  - url: .*
-    script: auto
-automatic_scaling:
-  min_idle_instances: automatic
-  max_idle_instances: automatic
-  min_pending_latency: automatic
-  max_pending_latency: automatic
-service_account: peaceful-rex-368804@appspot.gserviceaccount.com
+runtime: nodejs16
+env_variables:
+  PROJECT_ID: 'peaceful-rex-368804'
+  CLIENT_ID: '1059219973799-bumnu077tfd52kdolsicl1prbc7b3bkp.apps.googleusercontent.com'
+  CLIENT_SECRET: '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'
