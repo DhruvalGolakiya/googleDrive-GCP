@@ -13,7 +13,6 @@ const Oauth2Data = require("../../credential.json");
 const CLIENT_ID = Oauth2Data.web.client_id;
 const CLIENT_SECRET = Oauth2Data.web.client_secret;
 const fileSchema = require("../../model/fileModel");
-const flash = require("connect-flash");
 // const { REDIRECT_URI } = require("../../config/config");
 
 mongoose.connect(
@@ -25,7 +24,6 @@ db.once("open", function () {
   console.log("Connected successfully");
 });
 
-router.use(flash());
 
 const oAuth2Client = new google.auth.OAuth2(
   CLIENT_ID,
