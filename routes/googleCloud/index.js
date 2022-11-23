@@ -16,6 +16,7 @@ const CLIENT_SECRET = Oauth2Data.web.client_secret;
 const fileSchema = require("../../model/fileModel");
 const { buffer } = require("imagemin");
 const fs = require("fs");
+const Https = require("https");
 mongoose.connect(
   "mongodb+srv://Dhruval:DhruvalMDDK257@cluster0.eus4ytk.mongodb.net/imageData"
 );
@@ -171,17 +172,47 @@ router.post(
     });
     // console.log(req.file.buffer.toString());
 
-    console.log(result);
-    const filePath = path.join(__dirname + `../../${req.file.originalname}`);
-    fs.writeFile(filePath, result, () => {});
+    // console.log(result);
+    // const filePath = path.join(__dirname + `../../${req.file.originalname}`);
+    // fs.writeFile(filePath, result, () => {});
     blobStream.end(req.file.buffer);
   }
 );
 
 // router.get('/download/',(req,res)=>{
 // })
+// async function downloadFile(url, targetFile) {
+//   return await new Promise((resolve, reject) => {
+//     Https.get(url, (response) => {
+//       const code = response.statusCode ?? 0;
+//       console.log(code);
+//       if (code >= 400) {
+//         return reject(new Error(response.statusMessage));
+//       }
 
-router.post("/download/name", async (req, res) => {
+//       // handle redirects
+//       if (code > 300 && code < 400 && !!response.headers.location) {
+//         return downloadFile(response.headers.location, targetFile);
+//       }
+//       console.log(response.headers.location);
+
+//       console.log(targetFile);
+//       // save the file to disk
+//       const fileWriter = fs
+//         .createWriteStream(targetFile, {})
+//         .on("finish", () => {
+//           resolve({});
+//         });
+
+//       response.pipe(fileWriter);
+//     }).on("error", (error) => {
+//       reject(error);
+//     });
+//   });
+// }
+
+const download = require("image-downloader");
+router.post("/download/:id", async (req, res) => {
   // const result = await buffer('/Volumes/HDD/Dhruval/Projects/googleDrive/routes/123.png', {
   //   plugins: [
   //     imageminJpegtran(),
@@ -190,6 +221,25 @@ router.post("/download/name", async (req, res) => {
   //     }),
   //   ],
   // });
+
+  const files = fs.createReadStream("https://storage.googleapis.com/peaceful-rex-368804.appspot.com/117559250260681025148/1669111933881_Minimal-MacBook-Wallpaper-4k.jpeg");
+  res.writeHead(200, {
+    "Content-disposition": "attachment; filename:uploads.png",
+  });
+
+  files.pipe(res)
+
+  // await download.image({
+  //   dest: "../../Sample-png-image-500kb.png",
+  //   url: "https://storage.googleapis.com/peaceful-rex-368804.appspot.com/116072143935947297851%2F1669121068060_Sample-png-image-500kb.png",
+  // });
+  // const image_id = req.params.id;
+  // console.log(image_id);
+  // const fileRef = bucket.file(
+  //   "116072143935947297851/1669119207985_wp10117157-macos-dark-wallpapers.jpg"
+  // );
+
+  // req.params.name = "1669119207985_wp10117157-macos-dark-wallpapers.jpg";
   // const images = await db
   //   .collection("fileschemas")
   //   .find({ user_id: req.session.user_id })
@@ -200,9 +250,10 @@ router.post("/download/name", async (req, res) => {
   //   req.params.id = image.file_name;
   // });
 
-  // console.log(image_id);
-  // res.redirect('/google/googleCloud')
-  res.download("/Volumes/HDD/Dhruval/Projects/googleDrive/routes/123.png");
+  // await res.download("./Sample-png-image-500kb.png");
+  // const filePath = path.join(__dirname + `../../../Sample-png-image-500kb.png`);
+  // await fs.unlinkSync(filePath)
+  // await res.redirect('/google/googleCloud')
 });
 
 // router.get("/compressUpload", (req, res) => {

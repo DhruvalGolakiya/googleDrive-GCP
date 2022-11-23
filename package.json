@@ -21,6 +21,8 @@
     "fs": "^0.0.1-security",
     "googleapis": "^109.0.1",
     "http-errors": "~1.6.3",
+    "https": "^1.0.0",
+    "image-downloader": "^4.3.0",
     "imagemin": "^7.0.1",
     "imagemin-jpegtran": "^7.0.0",
     "imagemin-pngquant": "^9.0.2",
